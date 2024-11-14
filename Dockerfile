@@ -4,4 +4,4 @@ COPY package*.json ./
 RUN npm install
 COPY . .
 EXPOSE 3000
-CMD ["npm", "run", "dev"]  # Starts the Vite dev server inside the container
+CMD ["npm", "run", "dev"]
