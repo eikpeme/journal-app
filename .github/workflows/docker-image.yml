@@ -58,16 +58,17 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
 
-      # Step 3: Update kubeconfig to use EKS
+      # Step 3: Set up kubectl
+      - name: Set up kubectl
+        uses: azure/setup-kubectl@v1
+
+      # Step 4: Update kubeconfig to use EKS
       - name: Update kubeconfig for EKS
         run: |
-          aws eks update-kubeconfig --name ${{ secrets.EKS_CLUSTER_NAME }}
+          aws eks update-kubeconfig --name ${{ secrets.EKS_CLUSTER_NAME }} --region ${{ secrets.AWS_REGION }}
 
-      # Step 4: Deploy to EKS using kubectl
-      - name:
-          Deploy to EKS
-          # Ensure this file exists in your repo and is properly set up
-          # Ensure you have a service.yaml for exposing the app
+      # Step 5: Deploy to EKS using kubectl
+      - name: Deploy to EKS
         run: |
-          kubectl apply -f k8s/deployment.yaml   
+          kubectl apply -f k8s/deployment.yaml
           kubectl apply -f k8s/service.yaml
