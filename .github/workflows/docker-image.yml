@@ -41,3 +41,33 @@ jobs:
       - name: Push Docker image to ECR
         run: |
           docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/eikpeme/journal-app:latest
+
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout code again
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # Step 2: Set up AWS CLI and configure EKS credentials
+      - name: Set up AWS CLI
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      # Step 3: Update kubeconfig to use EKS
+      - name: Update kubeconfig for EKS
+        run: |
+          aws eks update-kubeconfig --name ${{ secrets.EKS_CLUSTER_NAME }}
+
+      # Step 4: Deploy to EKS using kubectl
+      - name:
+          Deploy to EKS
+          # Ensure this file exists in your repo and is properly set up
+          # Ensure you have a service.yaml for exposing the app
+        run: |
+          kubectl apply -f k8s/deployment.yaml   
+          kubectl apply -f k8s/service.yaml

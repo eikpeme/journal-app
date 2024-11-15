@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: journal-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: journal-app
+  template:
+    metadata:
+      labels:
+        app: journal-app
+    spec:
+      containers:
+        - name: journal-app
+          image: 060795936679.dkr.ecr.us-east-1.amazonaws.com/eikpeme/journal-app
+          ports:
+            - containerPort: 5173
