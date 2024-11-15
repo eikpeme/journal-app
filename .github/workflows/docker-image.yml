@@ -62,6 +62,10 @@ jobs:
       - name: Set up kubectl
         uses: azure/setup-kubectl@v1
 
+      - name: View kubeconfig content
+        run: |
+          cat ~/.kube/config
+
       # Step 4: Update kubeconfig to use EKS
       - name: Update kubeconfig for EKS
         run: |
