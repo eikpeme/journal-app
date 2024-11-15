@@ -62,14 +62,14 @@ jobs:
       - name: Set up kubectl
         uses: azure/setup-kubectl@v1
 
-      - name: View kubeconfig content
-        run: |
-          cat ~/.kube/config
-
       # Step 4: Update kubeconfig to use EKS
       - name: Update kubeconfig for EKS
         run: |
           aws eks update-kubeconfig --name ${{ secrets.EKS_CLUSTER_NAME }} --region ${{ secrets.AWS_REGION }}
+
+      - name: View kubeconfig content
+        run: |
+          cat ~/.kube/config
 
       # Step 5: Deploy to EKS using kubectl
       - name: Deploy to EKS
